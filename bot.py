@@ -13,13 +13,15 @@ from telegram.ext import (
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
-        [InlineKeyboardButton("💰 Make Payment", callback_data="payment")],
-        [InlineKeyboardButton("📞 Contact Admin", url="https://t.me/simplicityaccountmanagements")],
+        [InlineKeyboardButton("📊 View Plans", callback_data="plans")],
+        [InlineKeyboardButton("ℹ️ How It Works", callback_data="how")],
+        [InlineKeyboardButton("📞 Contact Admin", callback_data="admin")],
     ]
 
     await update.message.reply_text(
         "👋 Welcome!\n\n"
-        "Please choose an option:",
+        "📊 COPY TRADING PLANS\n\n"
+        "Choose an option below to learn more.",
         reply_markup=InlineKeyboardMarkup(keyboard),
     )
 
@@ -28,14 +30,77 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    if query.data == "payment":
+    if query.data == "plans":
+        keyboard = [
+            [InlineKeyboardButton("💵 $300 Plan", callback_data="plan300")],
+            [InlineKeyboardButton("💵 $500 Plan", callback_data="plan500")],
+            [InlineKeyboardButton("💵 $1,000 Plan", callback_data="plan1000")],
+            [InlineKeyboardButton("💵 $5,000 Plan", callback_data="plan5000")],
+            [InlineKeyboardButton("📞 Contact Admin", callback_data="admin")],
+        ]
+
         await query.message.reply_text(
-            "💰 PAYMENT INFORMATION\n\n"
-            "Network: BEP20 (BSC)\n"
-            "Currency: USDT\n\n"
-            "Send USDT to this wallet address:\n\n"
-            "0x5adc94bf41bdab0d9f9bb715ae9e6a4e80803462\n\n"
-            "⚠️ Make sure you select the BEP20 network."
+            "📊 COPY TRADING PLANS\n\n"
+            "💵 $300 Plan\n"
+            "Advertised weekly outcome: $3,000\n\n"
+            "💵 $500 Plan\n"
+            "Advertised weekly outcome: $6,000\n\n"
+            "💵 $1,000 Plan\n"
+            "Advertised weekly outcome: $9,000\n\n"
+            "💵 $5,000 Plan\n"
+            "Advertised weekly outcome: $13,000\n\n"
+            "⚠️ These figures are advertised/projection outcomes "
+            "and are NOT guaranteed. Trading involves substantial risk.",
+            reply_markup=InlineKeyboardMarkup(keyboard),
+        )
+
+    elif query.data == "how":
+        await query.message.reply_text(
+            "ℹ️ HOW IT WORKS\n\n"
+            "1️⃣ Choose a copy-trading plan.\n"
+            "2️⃣ Contact the admin for current terms and instructions.\n"
+            "3️⃣ Review the risks and applicable fees before proceeding.\n"
+            "4️⃣ Only proceed after you understand the terms.\n\n"
+            "⚠️ Trading profits are not guaranteed and capital can be lost."
+        )
+
+    elif query.data == "admin":
+        await query.message.reply_text(
+            "📞 CONTACT ADMIN\n\n"
+            "For more information, contact:\n"
+            "@simplicityaccountmanagements"
+        )
+
+    elif query.data == "plan300":
+        await query.message.reply_text(
+            "💵 $300 PLAN\n\n"
+            "Advertised weekly outcome: $3,000\n\n"
+            "⚠️ This is an advertised/projection outcome, not a guarantee.\n"
+            "Please contact the admin for current terms, fees and risk information."
+        )
+
+    elif query.data == "plan500":
+        await query.message.reply_text(
+            "💵 $500 PLAN\n\n"
+            "Advertised weekly outcome: $6,000\n\n"
+            "⚠️ This is an advertised/projection outcome, not a guarantee.\n"
+            "Please contact the admin for current terms, fees and risk information."
+        )
+
+    elif query.data == "plan1000":
+        await query.message.reply_text(
+            "💵 $1,000 PLAN\n\n"
+            "Advertised weekly outcome: $9,000\n\n"
+            "⚠️ This is an advertised/projection outcome, not a guarantee.\n"
+            "Please contact the admin for current terms, fees and risk information."
+        )
+
+    elif query.data == "plan5000":
+        await query.message.reply_text(
+            "💵 $5,000 PLAN\n\n"
+            "Advertised weekly outcome: $13,000\n\n"
+            "⚠️ This is an advertised/projection outcome, not a guarantee.\n"
+            "Please contact the admin for current terms, fees and risk information."
         )
 
 
@@ -57,7 +122,8 @@ def run_web_server():
 
 threading.Thread(target=run_web_server, daemon=True).start()
 
-token = os.getenv("BOT_TOKEN")
+
+token = os.environ.get("BOT_TOKEN")
 
 app = Application.builder().token(token).build()
 
