@@ -1,3 +1,4 @@
+import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -9,8 +10,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📞 Contact Admin"
     )
 
-app = Application.builder().token("YOUR_BOT_TOKEN").build()
+token = os.getenv("BOT_TOKEN")
 
+app = Application.builder().token(token).build()
 app.add_handler(CommandHandler("start", start))
 
 app.run_polling()
